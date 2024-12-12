@@ -1,0 +1,57 @@
+Code :
+#define BLYNK_TEMPLATE_ID "TMPL3ghdsShpm" 
+#define BLYNK_TEMPLATE_NAME "Sensor Light" 
+#define BLYNK_AUTH_TOKEN "oNHhKuqIr_5kSpoxjZYhxlbDeVxe7xp5" 
+#define BLYNK_PRINT Serial 
+#include <WiFi.h> 
+#include <WiFiClient.h> 
+#include <BlynkSimpleEsp32.h> 
+
+char auth[] = BLYNK_AUTH_TOKEN; 
+
+// Your WiFi credentials. 
+// Set password to "" for open networks. char 
+ssid[] = "MIWIFIR0"; 
+char pass[] = "shouvikghosh100";
+
+#define Led 2 //D2 
+#define trigPin 19 
+#define echoPin 18 
+int distance; void 
+setup() 
+{ 
+pinMode(trigPin, OUTPUT); 
+pinMode(echoPin, INPUT); 
+pinMode(Led,OUTPUT); 
+ // Debug console 
+ Serial.begin(9600); 
+ Blynk.begin(auth, ssid, pass);
+} 
+void loop() 
+{ 
+ Blynk.run(); 
+// Clear the trigPin by setting it LOW: 
+digitalWrite(trigPin, LOW);
+delayMicroseconds(5); 
+// Trigger the sensor by setting the trigPin high for 10 microseconds: 
+digitalWrite(trigPin, HIGH); 
+delayMicroseconds(10); 
+digitalWrite(trigPin, LOW);
+// Read the echoPin. pulseIn() returns the duration (length of the pulse) in microseconds: 
+int duration = pulseIn(echoPin, HIGH); 
+ 
+distance = (duration/2) / 29.1; 
+ Serial.print("Distance = "); 
+ Serial.print(distance); 
+ Serial.println(" cm"); 
+ Blynk.virtualWrite(V1,distance); if 
+(distance<15 )
+{ digitalWrite(Led, HIGH); 
+Serial.println("Light is turned on");
+}
+else{ 
+ 
+ digitalWrite(Led, LOW); 
+ 
+ }
+
