@@ -1,0 +1,49 @@
+CODE :
+#include<WiFi.h> 
+#include<HTTPClient.h> 
+HTTPClient http; 
+String ssid = "Network1 "; //Name of serviceset provider 
+String pas = "Ad332d56h80"; //Password to the mentioned serviveset provider 
+String api_key = "4uoU7uaj-NrYpc9mJe26gVwShwwrCdbO"; //The authetication token 
+String api = "https://blynk.cloud/external/api/get?token="+api_key+"&D2"; //To control through api 
+int led = 2; 
+void setup() { 
+Serial.begin(9600); 
+pinMode(led,OUTPUT); 
+WiFi.disconnect(); 
+ WiFi.mode(WIFI_STA); // set wifi to station mode 
+ WiFi.begin(ssid,pas); //connecting to the specified network 
+ while(WiFi.status() != WL_CONNECTED) 
+ { 
+ Serial.print("...."); 
+ delay(200); 
+ } 
+ Serial.print("I am connected with "+ssid); 
+ Serial.println(" "); 
+ Serial.print("IP: http://"); 
+ Serial.println(WiFi.localIP()); 
+} 
+void loop() { 
+ http.begin(api); 
+int code = http.GET(); 
+ Serial.println(code); 
+ 
+ if(code == 200) 
+ { 
+ String d = http.getString(); 
+if(code == 200) 
+ { 
+ String d = http.getString(); 
+ Serial.println(d); 
+if(d == "1") 
+digitalWrite(led,1); 
+else 
+ digitalWrite(led,0); 
+21
+ } 
+else 
+ { 
+ Serial.println("Something went wrong"); 
+ } 
+ delay(100); 
+} 
